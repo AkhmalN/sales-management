@@ -5,6 +5,7 @@ interface IUsersRepository {
   findAll(searchParams: { sort: string }): Promise<IProduct[]>;
   create(product: IProduct, id_product: string): Promise<{}>;
   findById(id: string): Promise<{}>;
+  delete(id: string): Promise<{}>;
 }
 
 class productRepository implements IUsersRepository {
@@ -16,6 +17,20 @@ class productRepository implements IUsersRepository {
     query += ` ORDER BY created_at ${sortOrder}`;
     return new Promise((resolve, reject) => {
       db.query<IProduct[]>(query, (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  }
+
+  findById(id: string): Promise<{}> {
+    let query = "SELECT * FROM products WHERE id_product = ?";
+
+    return new Promise((resolve, reject) => {
+      db.query<IProduct[]>(query, [id], (err, result) => {
         if (err) {
           reject(err);
         } else {
@@ -51,11 +66,11 @@ class productRepository implements IUsersRepository {
     });
   }
 
-  findById(id: string): Promise<{}> {
-    let query = "SELECT * FROM products WHERE id_product = ?";
+  delete(id: string): Promise<{}> {
+    let query = "DELETE FROM products WHERE id_product = ?";
 
     return new Promise((resolve, reject) => {
-      db.query<IProduct[]>(query, [id], (err, result) => {
+      db.query(query, [id], (err, result) => {
         if (err) {
           reject(err);
         } else {

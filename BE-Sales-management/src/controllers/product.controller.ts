@@ -76,6 +76,22 @@ class productController {
       });
     }
   }
+
+  async deleteProduct(req: Request, res: Response) {
+    const { id } = req.params;
+
+    try {
+      await productRepository.delete(id);
+      res.status(200).json({
+        message: "Product has been deleted",
+      });
+    } catch (error: any) {
+      res.status(500).json({
+        message: "Internal server error!",
+        error: error.message,
+      });
+    }
+  }
 }
 
 export default new productController();
