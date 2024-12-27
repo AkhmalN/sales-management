@@ -3,8 +3,13 @@ import db from "@app/utils/connect";
 
 interface IUsersRepository {
   findAll(searchParams: { sort: string }): Promise<IProduct[]>;
-  create(product: IProduct, id_product: string): Promise<{}>;
   findById(id: string): Promise<{}>;
+  create(
+    product: IProduct,
+    id_product: string,
+    image: string | null
+  ): Promise<{}>;
+  update(id: string, updateProduct: IProduct): Promise<{}>;
   delete(id: string): Promise<{}>;
 }
 
@@ -40,9 +45,13 @@ class productRepository implements IUsersRepository {
     });
   }
 
-  create(newProduct: IProduct, id_product: string): Promise<{}> {
+  create(
+    newProduct: IProduct,
+    id_product: string,
+    image: string | null
+  ): Promise<{}> {
     let query =
-      "INSERT INTO products (id_product, product_name, category, price, quantity, product_status, stock, id_sales) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO products (id_product, product_name, category, price, quantity, product_status, stock, id_sales, image_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     const values = [
       id_product,
@@ -53,6 +62,7 @@ class productRepository implements IUsersRepository {
       newProduct.product_status,
       newProduct.stock,
       newProduct.id_sales,
+      image,
     ];
 
     return new Promise((resolve, reject) => {
@@ -63,6 +73,35 @@ class productRepository implements IUsersRepository {
           resolve(result);
         }
       });
+    });
+  }
+
+  update(id: string, updateProduct: IProduct): Promise<{}> {
+    let query =
+      "UPDATE products SET product_name = ?, category = ?, price = ?, quantity = ? , product_status = ? , stock = ? , id_sales = ? , image_url = ? WHERE id_product = ?";
+
+    return new Promise((resolve, reject) => {
+      db.query(
+        query,
+        [
+          updateProduct.product_name,
+          updateProduct.category,
+          updateProduct.price,
+          updateProduct.quantity,
+          updateProduct.product_status,
+          updateProduct.stock,
+          updateProduct.id_sales,
+          updateProduct.image_url,
+          id,
+        ],
+        (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result);
+          }
+        }
+      );
     });
   }
 

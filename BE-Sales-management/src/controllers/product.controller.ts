@@ -47,7 +47,7 @@ class productController {
       stock,
       id_sales,
     } = req.body;
-
+    const imageUrl = req.file ? req.file.path : null;
     try {
       if (
         !product_name ||
@@ -64,7 +64,7 @@ class productController {
         });
       }
       const id_product = generateUUID();
-      await productRepository.create(req.body, id_product);
+      await productRepository.create(req.body, id_product, imageUrl);
 
       res.status(201).json({
         message: "Product created successfully",
@@ -72,6 +72,20 @@ class productController {
     } catch (error: any) {
       res.status(500).json({
         message: "Error creating product",
+        error: error.message,
+      });
+    }
+  }
+
+  async updateProduct(req: Request, res: Response): Promise<void> {
+    const { id } = req.params;
+
+    try {
+      await productRepository.update(id, req.body);
+      res.status(200).json({ message: "Product has been updated" });
+    } catch (error: any) {
+      res.status(500).json({
+        message: "Internal server error!",
         error: error.message,
       });
     }

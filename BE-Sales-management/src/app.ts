@@ -6,6 +6,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import userRoutes from "@app/routes/user.route";
 import productRoutes from "@app/routes/product.route";
+import path from "path";
 
 dotenv.config();
 
@@ -30,6 +31,9 @@ app.use(
 );
 app.use("/api/v1", userRoutes);
 app.use("/api/v1", productRoutes);
+
+app.use("/api/v1/uploads", express.static(path.join(__dirname, "../uploads")));
+
 app.listen(PORT, () => {
   console.log("App is running on port :", PORT);
 });

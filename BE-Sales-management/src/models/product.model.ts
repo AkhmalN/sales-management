@@ -9,4 +9,5 @@ export interface IProduct extends RowDataPacket {
   product_status: string;
   stock: number;
   id_sales: number;
+  image_url: string;
 }
