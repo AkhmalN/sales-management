@@ -2,27 +2,39 @@ import { IUser } from "@app/models/user.model";
 import db from "@app/utils/connect";
 
 interface IUsersRepository {
-  findAll(searchParams: { username: string; sort: string }): Promise<IUser[]>;
+  findAll(searchParams: {
+    sort: string;
+    page: number;
+    size: number;
+    offset: number;
+  }): Promise<IUser[]>;
   findById(id: number): Promise<IUser | undefined>;
   create(user: IUser): Promise<{}>;
   delete(id: number): Promise<{}>;
   update(user: IUser, id: string): Promise<{}>;
+  count(): Promise<[{ total: number }]>;
 }
 
 class UsersRepository implements IUsersRepository {
-  findAll(searchParams: { username?: string; sort: string }): Promise<IUser[]> {
+  findAll(searchParams: {
+    sort: string;
+    page: number;
+    size: number;
+    offset: number;
+  }): Promise<IUser[]> {
     let query: string = "SELECT * FROM users";
     let queryParams: Array<any> = [];
     const sortOrder =
       searchParams.sort.toUpperCase() === "DESC" ? "DESC" : "ASC";
 
-    if (searchParams.username) {
-      query += " WHERE username LIKE ?";
-      queryParams.push(`%${searchParams.username}%`);
-    }
-
     query += ` ORDER BY created_at ${sortOrder}`;
 
+    if (searchParams.size || searchParams.offset) {
+      query += " LIMIT ? OFFSET ?";
+      queryParams.push(searchParams.size, searchParams.offset);
+    }
+
+    console.log(query + queryParams);
     return new Promise((resolve, reject) => {
       db.query<IUser[]>(query, queryParams, (err, result) => {
         if (err) {
@@ -97,6 +109,19 @@ class UsersRepository implements IUsersRepository {
 
     return new Promise((resolve, reject) => {
       db.query(query, [id], (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  }
+  count(): Promise<[{ total: number }]> {
+    let query = "SELECT COUNT(*) as total FROM users";
+
+    return new Promise((resolve, reject) => {
+      db.query<any>(query, (err, result) => {
         if (err) {
           reject(err);
         } else {

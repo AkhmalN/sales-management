@@ -2,7 +2,12 @@ import { IProduct } from "@app/models/product.model";
 import db from "@app/utils/connect";
 
 interface IUsersRepository {
-  findAll(searchParams: { sort: string }): Promise<IProduct[]>;
+  findAll(searchParams: {
+    sort: string;
+    page: number;
+    size: number;
+    offset: number;
+  }): Promise<IProduct[]>;
   findById(id: string): Promise<{}>;
   create(
     product: IProduct,
@@ -11,17 +16,29 @@ interface IUsersRepository {
   ): Promise<{}>;
   update(id: string, updateProduct: IProduct): Promise<{}>;
   delete(id: string): Promise<{}>;
+  count(): Promise<[{ total: number }]>;
 }
 
 class productRepository implements IUsersRepository {
-  findAll(searchParams: { sort: string }): Promise<IProduct[]> {
+  findAll(searchParams: {
+    sort: string;
+    page: number;
+    size: number;
+    offset: number;
+  }): Promise<IProduct[]> {
     let query = "SELECT * FROM products";
     const sortOrder =
       searchParams.sort.toUpperCase() === "DESC" ? "DESC" : "ASC";
+    let queryParams: Array<any> = [];
 
     query += ` ORDER BY created_at ${sortOrder}`;
+
+    if (searchParams.size || searchParams.offset) {
+      query += " LIMIT ? OFFSET ?";
+      queryParams.push(searchParams.size, searchParams.offset);
+    }
     return new Promise((resolve, reject) => {
-      db.query<IProduct[]>(query, (err, result) => {
+      db.query<IProduct[]>(query, queryParams, (err, result) => {
         if (err) {
           reject(err);
         } else {
@@ -110,6 +127,20 @@ class productRepository implements IUsersRepository {
 
     return new Promise((resolve, reject) => {
       db.query(query, [id], (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  }
+
+  count(): Promise<[{ total: number }]> {
+    let query = "SELECT COUNT(*) as total FROM products";
+
+    return new Promise((resolve, reject) => {
+      db.query<any>(query, (err, result) => {
         if (err) {
           reject(err);
         } else {

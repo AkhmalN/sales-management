@@ -4,15 +4,32 @@ import generateUUID from "@app/helpers/uuid.helper";
 
 class productController {
   async getAllProduct(req: Request, res: Response): Promise<void> {
+    const page: number = parseInt(req.query.page as string) || 1;
+    const size: number = parseInt(req.query.size as string) || 10;
+    const offset = (page - 1) * size;
+
     const { sort } = req.query;
     try {
       const products = await productRepository.findAll({
         sort: sort as string,
+        page: page,
+        size: size,
+        offset: offset,
       });
 
-      res
-        .status(200)
-        .json({ message: "Success get  products", data: products });
+      const productCounts = await productRepository.count();
+      const totalProducts = productCounts[0].total;
+      const totalPage = Math.ceil(totalProducts / size);
+      res.status(200).json({
+        message: "Success get  products",
+        data: products,
+        pagination: {
+          total: totalProducts,
+          page: page,
+          size: size,
+          total_pages: totalPage,
+        },
+      });
     } catch (error: any) {
       res
         .status(500)

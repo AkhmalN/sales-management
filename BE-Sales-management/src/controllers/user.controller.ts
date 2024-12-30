@@ -3,15 +3,32 @@ import userRespository from "@app/repository/user.respository";
 
 class UsersController {
   async getAllUsers(req: Request, res: Response): Promise<void> {
-    const { username, sort } = req.query;
+    const page: number = parseInt(req.query.page as string) || 1;
+    const size: number = parseInt(req.query.size as string) || 10;
+    const offset = (page - 1) * size;
+
+    const { sort } = req.query;
     try {
       const users = await userRespository.findAll({
-        username: username as string,
         sort: sort as string,
+        page: page,
+        size: size,
+        offset: offset,
       });
+
+      const userCounts = await userRespository.count();
+      const totalUser = userCounts[0].total;
+      const totalPage = Math.ceil(totalUser / size);
+
       res.status(200).json({
         message: "Success get all users",
         data: users,
+        pagination: {
+          total: totalUser,
+          page: page,
+          size: size,
+          total_pages: totalPage,
+        },
       });
     } catch (err) {
       console.log(err);
