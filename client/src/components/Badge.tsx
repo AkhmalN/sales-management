@@ -2,7 +2,7 @@ import React from "react";
 
 interface BadgeProps {
   variant: "success" | "warning" | "danger" | "primary";
-  text: string;
+  text: string | React.ReactElement;
 }
 
 const Badge: React.FC<BadgeProps> = ({ variant, text }) => {

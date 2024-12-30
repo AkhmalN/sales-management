@@ -28,11 +28,14 @@ export const keyColumn = {
       key: "email",
       label: "Email",
     },
+    { key: "address", label: "Address" },
+    { key: "age", label: "age" },
     {
       key: "phone",
       label: "Phone",
     },
     { key: "gender", label: "Gender" },
+    { key: "is_active", label: "Online" },
   ],
   invoice: [
     { key: "invoice", label: "Invoice" },

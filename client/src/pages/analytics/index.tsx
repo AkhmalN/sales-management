@@ -31,6 +31,7 @@ const AnalyticsPage = () => {
         Action={TableAction}
         fieldId="id_customer"
         ActionAdd={<ModalAdd title="Add Customer" />}
+        pagination
       />
     </div>
   );

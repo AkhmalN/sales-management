@@ -1,4 +1,6 @@
+import { RiRadioButtonLine } from "react-icons/ri";
 import Badge from "./Badge";
+import Pagination from "./Pagination";
 import SearchBar from "./Search";
 import React from "react";
 
@@ -16,6 +18,7 @@ interface TableProps {
   }[];
   fieldId: string;
   status_label?: string;
+  pagination?: boolean;
 }
 
 const Table: React.FC<TableProps> = ({
@@ -27,9 +30,10 @@ const Table: React.FC<TableProps> = ({
   keyColumn,
   fieldId,
   status_label,
+  pagination,
 }) => {
   return (
-    <div className="overflow-x-auto bg-white rounded-xl w-full">
+    <div className="overflow-x-auto overflow-y-hidden bg-white rounded-xl w-full">
       <div className="-m-1.5 w-full">
         <div className="flex justify-between p-5 mt-5 w-full ">
           <div className="">
@@ -154,6 +158,26 @@ const Table: React.FC<TableProps> = ({
                                 </td>
                               );
                             }
+                            if (column.key === "is_active") {
+                              return (
+                                <td
+                                  className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
+                                  key={`cell-${rowindex}-${column.key}`}
+                                >
+                                  {row[column.key] === 1 ? (
+                                    <Badge
+                                      text={<RiRadioButtonLine />}
+                                      variant="success"
+                                    />
+                                  ) : (
+                                    <Badge
+                                      text={<RiRadioButtonLine />}
+                                      variant="danger"
+                                    />
+                                  )}
+                                </td>
+                              );
+                            }
 
                             return (
                               <td
@@ -173,6 +197,11 @@ const Table: React.FC<TableProps> = ({
             </div>
           </div>
         </div>
+        {pagination && (
+          <div className="px-6 py-4 min-w-full inline-block">
+            <Pagination />
+          </div>
+        )}
       </div>
     </div>
   );
