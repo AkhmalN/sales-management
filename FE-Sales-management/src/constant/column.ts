@@ -23,7 +23,7 @@ export const keyColumn = {
     { key: "category", label: "Category" },
   ],
   customer: [
-    { key: "name", label: "Name" },
+    { key: "username", label: "Username" },
     {
       key: "email",
       label: "Email",

@@ -3,7 +3,7 @@ import SearchBar from "./Search";
 import React from "react";
 
 interface TableProps {
-  data: Record<string, any>;
+  data: any[] | undefined;
   title?: string;
   searchBar?: boolean;
   Action?: React.FC<{ data: Record<string, string>; fieldId: string }>;
@@ -114,15 +114,11 @@ const Table: React.FC<TableProps> = ({
                                   <div
                                     className={`flex flex-row items-center gap-2 `}
                                   >
-                                    <p
-                                      className={`font-bold text-opacity-100 max-w-auto ${
-                                        row[column.key] === "Male"
-                                          ? "bg-saas-blue bg-opacity-20 text-saas-blue font-bold"
-                                          : "bg-saas-orange bg-opacity-20 text-saas-orange font-bold"
-                                      } px-3 py-1 rounded-md`}
-                                    >
-                                      {row[column.key]}
-                                    </p>
+                                    {row[column.key] === "Male" ? (
+                                      <Badge text="Male" variant="primary" />
+                                    ) : (
+                                      <Badge text="Female" variant="warning" />
+                                    )}
                                   </div>
                                 </td>
                               );
@@ -148,7 +144,13 @@ const Table: React.FC<TableProps> = ({
                                   className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"
                                   key={`cell-${rowindex}-${column.key}`}
                                 >
-                                  <Badge title={row[column.key]} />
+                                  {row[column.key] === "Complete" ? (
+                                    <Badge text="Completed" variant="success" />
+                                  ) : row[column.key] === "Pending" ? (
+                                    <Badge text="Pending" variant="warning" />
+                                  ) : (
+                                    <Badge text="Cancel" variant="danger" />
+                                  )}
                                 </td>
                               );
                             }

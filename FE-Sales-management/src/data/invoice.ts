@@ -20,7 +20,7 @@ export const INVOICE: INVOICE_TYPE[] = [
     name: "Robert Bacins",
     email: "robertbacins@gmail.com",
     date: "09 Dec, 2020",
-    status_invoice: "Complete",
+    status_invoice: "Success",
   },
   {
     invoice: "#876987",
