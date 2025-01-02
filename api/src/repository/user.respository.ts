@@ -9,7 +9,7 @@ interface IUsersRepository {
     offset: number;
   }): Promise<IUser[]>;
   findById(id: number): Promise<IUser | undefined>;
-  create(user: IUser): Promise<{}>;
+  create(user: IUser, id_user: string): Promise<{}>;
   delete(id: number): Promise<{}>;
   update(user: IUser, id: string): Promise<{}>;
   count(): Promise<[{ total: number }]>;
@@ -59,10 +59,11 @@ class UsersRepository implements IUsersRepository {
     });
   }
 
-  create(user: IUser): Promise<{}> {
+  create(user: IUser, id_user: string): Promise<{}> {
     let query =
-      "INSERT INTO users (first_name, last_name, username, email, password) VALUES (?, ?, ?, ?, ?)";
+      "INSERT INTO users (id_user, first_name, last_name, username, email, password) VALUES (?, ?, ?, ?, ?, ?)";
     const values = [
+      id_user,
       user.first_name,
       user.last_name,
       user.username,

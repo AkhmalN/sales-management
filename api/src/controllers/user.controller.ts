@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import userRespository from "@app/repository/user.respository";
+import generateUUID from "@app/helpers/uuid.helper";
 
 class UsersController {
   async getAllUsers(req: Request, res: Response): Promise<void> {
@@ -17,7 +18,7 @@ class UsersController {
       });
 
       const userCounts = await userRespository.count();
-      const totalUser = userCounts[0].total;
+      const totalUser = userCounts[0] ? userCounts[0].total : 0;
       const totalPage = Math.ceil(totalUser / size);
 
       res.status(200).json({
@@ -57,8 +58,9 @@ class UsersController {
             "The form must not be blank and must be completely filled in",
         });
       }
+      const id = generateUUID();
 
-      await userRespository.create(req.body);
+      await userRespository.create(req.body, id);
 
       res.status(201).json({
         message: "User created successfully",

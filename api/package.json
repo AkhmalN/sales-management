@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "base62": "^2.0.2",
+    "bcrypt-ts": "^5.0.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
     "cookie-parser": "^1.4.7",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
     "@types/body-parser": "^1.19.5",
     "@types/config": "^3.3.5",
     "@types/cookie-parser": "^1.4.8",
