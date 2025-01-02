@@ -2,7 +2,7 @@ import { IUser } from "@app/models/user.model";
 import db from "@app/utils/connect";
 
 interface IUserAuth {
-  login(username: string, password: string, email: string): Promise<{}>;
+  login(username: string, email: string): Promise<{}>;
   register(
     user: {
       id_user: string;
@@ -13,18 +13,15 @@ interface IUserAuth {
     },
     password: string
   ): Promise<{}>;
-  checkRegistration(
-    username: string,
-    email: string
-  ): Promise<{ status: boolean }>;
+  checkRegistration(email: string): Promise<{ registration: boolean }>;
 }
 
 class userAuth implements IUserAuth {
-  login(username: string, password: string, email: string): Promise<{}> {
-    let query = "";
+  login(username: string, email: string): Promise<{}> {
+    let query = "SELECT * FROM users WHERE username = ? OR email = ?";
 
     return new Promise((resolve, reject) => {
-      db.query(query, [username, email, password], (err, result) => {
+      db.query(query, [username, email], (err, result) => {
         if (err) {
           reject(err);
         } else {
@@ -65,20 +62,17 @@ class userAuth implements IUserAuth {
     });
   }
 
-  checkRegistration(
-    username: string,
-    email: string
-  ): Promise<{ status: boolean }> {
-    let query = "SELECT * FROM users WHERE username = ? OR email = ?";
+  checkRegistration(email: string): Promise<{ registration: boolean }> {
+    let query = "SELECT * FROM users WHERE email = ?";
     return new Promise((resolve, reject) => {
-      db.query<[]>(query, [username, email], (err, result) => {
+      db.query<[]>(query, [email], (err, result) => {
         if (err) {
           return reject(err);
         }
-        if (result.length === 0) {
-          resolve({ status: false });
+        if (result.length > 0) {
+          resolve({ registration: true });
         } else {
-          resolve({ status: true });
+          resolve({ registration: false });
         }
       });
     });

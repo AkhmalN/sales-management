@@ -9,11 +9,9 @@ class authController {
   async register(req: Request, res: Response): Promise<void> {
     const { first_name, last_name, username, email, password } = req.body;
     try {
-      const userExist = await auth.checkRegistration(username, email);
-      if (!userExist) {
-        res
-          .status(404)
-          .json({ message: "username or email is already exist!" });
+      const { registration } = await auth.checkRegistration(email);
+      if (registration) {
+        res.status(404).json({ message: "email is already exist!" });
         return;
       }
 
