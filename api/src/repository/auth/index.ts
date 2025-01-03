@@ -13,7 +13,10 @@ interface IUserAuth {
     },
     password: string
   ): Promise<{}>;
-  checkRegistration(email: string): Promise<{ registration: boolean }>;
+  checkRegistration(
+    email: string,
+    username: string
+  ): Promise<{ registration: boolean; user: IUser | null }>;
 }
 
 class userAuth implements IUserAuth {
@@ -62,17 +65,21 @@ class userAuth implements IUserAuth {
     });
   }
 
-  checkRegistration(email: string): Promise<{ registration: boolean }> {
-    let query = "SELECT * FROM users WHERE email = ?";
+  checkRegistration(
+    username: string,
+    email: string
+  ): Promise<{ registration: boolean; user: IUser | null }> {
+    let query = "SELECT * FROM users WHERE username = ? AND email = ?";
     return new Promise((resolve, reject) => {
-      db.query<[]>(query, [email], (err, result) => {
+      db.query<IUser[]>(query, [username, email], (err, result) => {
         if (err) {
           return reject(err);
         }
+        // console.log(result);
         if (result.length > 0) {
-          resolve({ registration: true });
+          resolve({ registration: true, user: result[0] });
         } else {
-          resolve({ registration: false });
+          resolve({ registration: false, user: null });
         }
       });
     });

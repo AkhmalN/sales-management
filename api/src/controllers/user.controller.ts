@@ -60,7 +60,7 @@ class UsersController {
       }
       const id = generateUUID();
 
-      await userRespository.create(req.body, id);
+      await userRespository.create(req.body, id as string);
 
       res.status(201).json({
         message: "User created successfully",
