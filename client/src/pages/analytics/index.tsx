@@ -2,7 +2,7 @@ import Table from "../../components/table";
 import { keyColumn } from "../../constant/column";
 import ModalAdd from "./ModalAdd";
 import { TableAction } from "./TableAction";
-import { getUsers } from "../../lib/api/users/getUsers";
+import { getUsersData } from "../../lib/api/users/getUsers";
 import Loading from "../../components/Loading";
 import { useQueries } from "../../hooks/useQueries";
 import { USERS_QUERY_KEY } from "../../constant/queryKey";
@@ -10,7 +10,7 @@ import { USERS_QUERY_KEY } from "../../constant/queryKey";
 const AnalyticsPage = () => {
   const { isPending, data } = useQueries({
     queryKey: USERS_QUERY_KEY,
-    queryFnc: getUsers,
+    queryFnc: () => getUsersData({ params: { page: 1, size: 10 } }),
   });
 
   if (isPending) {
@@ -31,7 +31,7 @@ const AnalyticsPage = () => {
         Action={TableAction}
         fieldId="id_customer"
         ActionAdd={<ModalAdd title="Add Customer" />}
-        pagination
+        paginate
       />
     </div>
   );

@@ -1,10 +1,17 @@
-import { IUser } from "../../../types/users";
-import { serverRequest } from "../../../utils/axios";
+import { getRequest } from "../../../helpers/api";
+import { IClientGetResponse } from "../../../types/clients";
 
-export const getUsers = async (): Promise<IUser[]> => {
+export const getUsersData = async ({
+  params,
+}: {
+  params: { page: number; size: number };
+}): Promise<IClientGetResponse> => {
   try {
-    const { data } = await serverRequest.get("/users?page=1&size=10&sort=ASC");
-    return data.data;
+    const response = await getRequest<IClientGetResponse>({
+      url: `/users?page=${params.page}&size=${params.size}&sort=ASC`,
+      params,
+    });
+    return response;
   } catch (error: any) {
     throw new Error(error);
   }

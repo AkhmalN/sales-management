@@ -3,9 +3,10 @@ import Badge from "./Badge";
 import Pagination from "./Pagination";
 import SearchBar from "./Search";
 import React from "react";
+import { IClientGetResponse } from "../types/clients";
 
 interface TableProps {
-  data: any[] | undefined;
+  data: IClientGetResponse | undefined;
   title?: string;
   searchBar?: boolean;
   Action?: React.FC<{ data: Record<string, string>; fieldId: string }>;
@@ -18,7 +19,7 @@ interface TableProps {
   }[];
   fieldId: string;
   status_label?: string;
-  pagination?: boolean;
+  paginate?: boolean;
 }
 
 const Table: React.FC<TableProps> = ({
@@ -30,7 +31,7 @@ const Table: React.FC<TableProps> = ({
   keyColumn,
   fieldId,
   status_label,
-  pagination,
+  paginate,
 }) => {
   return (
     <div className="overflow-x-auto overflow-y-hidden bg-white rounded-xl w-full">
@@ -83,7 +84,7 @@ const Table: React.FC<TableProps> = ({
                   </tr>
                 </thead>
                 <tbody>
-                  {data?.map((row: any, rowindex: any) => {
+                  {data?.data.map((row: any, rowindex: any) => {
                     return (
                       <tr key={`row-${rowindex}`}>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
@@ -197,7 +198,7 @@ const Table: React.FC<TableProps> = ({
             </div>
           </div>
         </div>
-        {pagination && (
+        {paginate && (
           <div className="px-6 py-4 min-w-full inline-block">
             <Pagination />
           </div>
