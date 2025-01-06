@@ -8,6 +8,9 @@ import DashboardPage from "../pages/beranda";
 import AnalyticsPage from "../pages/analytics";
 import RegisterPage from "../pages/register";
 import InvoicePage from "../pages/invoice";
+import Cookies from "js-cookie";
+
+const token = Cookies.get("access_token") ?? null;
 
 export const router = createBrowserRouter([
   {
@@ -22,7 +25,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <ProtectedRoutes requiredRole="user" />,
+    element: <ProtectedRoutes token={token} />,
     children: [
       {
         element: <Layout />,

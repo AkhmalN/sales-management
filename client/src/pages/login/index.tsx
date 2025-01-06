@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { useAuth } from "../../context/auth-context";
 
 const LoginPage: React.FC = () => {
-  const { storeInfo } = useAuth();
+  const { storeInfo, setToken } = useAuth();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
   const {
@@ -32,7 +32,7 @@ const LoginPage: React.FC = () => {
       const result = response.status
         ? toast.success(response.message)
         : toast.warn(response.message);
-      console.log(response);
+      setToken(response.token.access_token);
       if (response.status) {
         storeInfo(data);
         setTimeout(() => {

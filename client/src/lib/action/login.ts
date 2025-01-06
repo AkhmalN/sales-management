@@ -11,6 +11,9 @@ export type TClientLogin = {
     username: string;
     email: string;
   };
+  token: {
+    access_token: string;
+  };
 };
 
 export async function login(formData: FormDataLogin): Promise<TClientLogin> {
@@ -19,7 +22,6 @@ export async function login(formData: FormDataLogin): Promise<TClientLogin> {
       url: "/auth/login",
       data: formData,
     });
-    console.log(response);
     return response;
   } catch (error: any) {
     console.log(error);
