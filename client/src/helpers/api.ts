@@ -37,18 +37,18 @@ export const getRequest = async <T>({
   }
 };
 
-export const postRequest = async ({
+export const postRequest = async <T>({
   url,
   data = {},
   params = {},
-}: TPostRequest): Promise<void> => {
+}: TPostRequest): Promise<T> => {
   try {
-    const response = await axios.post(url, data, {
+    const response = await axios.post<T>(url, data, {
       params,
     });
     return response.data;
   } catch (error: any) {
-    return error;
+    return error.response;
   }
 };
 

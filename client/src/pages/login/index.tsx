@@ -27,13 +27,20 @@ const LoginPage: React.FC = () => {
   };
 
   const loginAccount = async (data: FormDataLogin) => {
-    const response = await login(data);
-    const result = response.status
-      ? toast.success(response.message)
-      : toast.warn(response.message);
-    storeInfo(data);
-    navigate("/dashboard");
-    return result;
+    try {
+      const response = await login(data);
+      const result = response.status
+        ? toast.success(response.message)
+        : toast.warn(response.message);
+
+      if (response.status) {
+        storeInfo(data);
+        navigate("/dashboard");
+      }
+      return result;
+    } catch (error: any) {
+      toast.warn(error);
+    }
   };
 
   return (
