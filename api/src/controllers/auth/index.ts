@@ -4,35 +4,65 @@ import { compare, hashed } from "@app/services/hash";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
+interface IWebResponse {
+  status: boolean;
+  message: string;
+  data?: Record<string, any>;
+  token:
+    | {
+        access_token: string;
+        expires_in: number;
+      }
+    | undefined;
+}
+
 class authController {
   async login(req: Request, res: Response): Promise<void> {
     const { username, email, password } = req.body;
     try {
       const { user } = await auth.checkRegistration(username, email);
       if (user === null) {
-        res.status(404).json({ message: "user unregistered!" });
+        res
+          .status(404)
+          .json({ status: false, message: "username or email not found!" });
         return;
       }
 
       const checkedPassword = compare(password, user.password);
+      if (!checkedPassword) {
+        res.status(400).json({ status: false, message: "Invalid password" });
+        return;
+      }
       const token = jwt.sign({ id: user.id_user }, "secretkey");
+      const token_expired = 3600;
 
       res
         .cookie("access_token", token, {
           httpOnly: true,
+          maxAge: token_expired * 1000,
         })
         .status(200)
         .json({
+          status: true,
           message: "Successfully login",
-          user: {
+          data: {
             username,
             email,
+          },
+          token: {
+            access_token: token,
+            expires_in: token_expired,
           },
         });
     } catch (error: any) {
       res.status(500).json({
-        message: "Error register user",
-        error: error.message,
+        status: false,
+        message: "Error during login process",
+        data: {},
+        token: {
+          access_token: "",
+          expires_in: 0,
+        },
       });
     }
   }
