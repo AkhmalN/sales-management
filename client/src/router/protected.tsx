@@ -2,19 +2,10 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
 interface ProtectedRoutesProps {
-  // requiredRole?: string;
   token: string | null;
 }
 
-const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({
-  // requiredRole,
-  token,
-}) => {
-  // const role = "user";
-  // if (role !== requiredRole) {
-  //   return <Navigate to="/" replace />;
-  // }
-
+const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({ token }) => {
   if (!token) {
     return <Navigate to={"/"} replace />;
   }

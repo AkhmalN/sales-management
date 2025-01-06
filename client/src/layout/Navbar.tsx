@@ -1,7 +1,3 @@
-// import React from "react";
-// import { FaBell } from "react-icons/fa";
-// import { IoSettingsSharp } from "react-icons/io5";
-// import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { BiCaretDown, BiCaretRight } from "react-icons/bi";
