@@ -38,7 +38,7 @@ function Modal({
               size === "large"
                 ? "w-2/3 h-2/3"
                 : size === "medium"
-                ? "w-2/4 h-2/4"
+                ? "w-2/4 h-3/5"
                 : size === "small"
                 ? "w-2/5 h-2/5"
                 : size === "very-small"

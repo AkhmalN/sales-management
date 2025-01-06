@@ -28,7 +28,25 @@ const ModalAddd = ({ title }: { title: string }) => {
         <form className="flex flex-col justify-between w-full h-full">
           <div className="w-full grid grid-cols-2 gap-3">
             <div className="flex flex-col">
-              <label>Name</label>
+              <label>First Name</label>
+              <Input
+                className="w-auto"
+                type="text"
+                placeholder="Enter customer name"
+                id=""
+              />
+            </div>
+            <div className="flex flex-col">
+              <label>Last Name</label>
+              <Input
+                className="w-auto"
+                type="text"
+                placeholder="Enter customer name"
+                id=""
+              />
+            </div>
+            <div className="flex flex-col">
+              <label>Username</label>
               <Input
                 className="w-auto"
                 type="text"
@@ -41,6 +59,15 @@ const ModalAddd = ({ title }: { title: string }) => {
               <Input
                 className="w-auto"
                 type="text"
+                placeholder="Enter customer email"
+                id=""
+              />
+            </div>
+            <div className="flex flex-col">
+              <label>Password</label>
+              <Input
+                className="w-auto"
+                type="password"
                 placeholder="Enter customer email"
                 id=""
               />
@@ -64,16 +91,25 @@ const ModalAddd = ({ title }: { title: string }) => {
               />
             </div>
             <div className="flex flex-col">
-              <label>Address</label>
+              <label>Age</label>
               <Input
                 className="w-auto"
-                type="text"
-                placeholder="Enter customer address"
+                type="number"
+                placeholder="Enter customer Gender"
                 id=""
               />
             </div>
           </div>
-          <div className="flex justify-end">
+          <div className="flex flex-col">
+            <label>Address</label>
+            <Input
+              className="w-auto"
+              type="text"
+              placeholder="Enter customer address"
+              id=""
+            />
+          </div>
+          <div className="flex justify-end pt-2">
             <Button className="bg-saas-primary">
               <span>Save</span>
               <LuSave />
