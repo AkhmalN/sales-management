@@ -4,9 +4,9 @@ export type FormDataRegister = {
   username: string;
   firstName: string;
   lastName: string;
-  password: string;
   email: string;
   age: number;
+  password: string;
   confirmPassword: string;
 };
 

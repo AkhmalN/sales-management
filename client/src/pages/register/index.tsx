@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import ProductLogo from "../../assets/Logo and company - Cropped.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FormDataRegister, registerShcema } from "../../lib/types/zod/registes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { FaSpinner } from "react-icons/fa6";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import { registerUser } from "../../lib/action/register";
 
 const RegisterPage: React.FC = () => {
+  const navigate = useNavigate();
   const [visibleField, setVisibleFields] = useState({
     password: false,
     confirmPassword: false,
@@ -16,7 +19,7 @@ const RegisterPage: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
   } = useForm<FormDataRegister>({
     resolver: zodResolver(registerShcema),
   });
@@ -36,9 +39,21 @@ const RegisterPage: React.FC = () => {
   };
 
   const registerAccount = async (data: FormDataRegister) => {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    console.log(data);
-    console.log(isSubmitSuccessful);
+    try {
+      const response = await registerUser(data);
+      const result = response.status
+        ? toast.success(response.message)
+        : toast.warn(response.message);
+
+      if (response.status) {
+        setTimeout(() => {
+          navigate("/");
+        }, 3000);
+      }
+      return result;
+    } catch (error: any) {
+      toast.warn(error);
+    }
   };
 
   return (

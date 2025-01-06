@@ -32,10 +32,12 @@ const LoginPage: React.FC = () => {
       const result = response.status
         ? toast.success(response.message)
         : toast.warn(response.message);
-
+      console.log(response);
       if (response.status) {
         storeInfo(data);
-        navigate("/dashboard");
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 3000);
       }
       return result;
     } catch (error: any) {

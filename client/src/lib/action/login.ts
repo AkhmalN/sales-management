@@ -19,8 +19,8 @@ export async function login(formData: FormDataLogin): Promise<TClientLogin> {
       url: "/auth/login",
       data: formData,
     });
-
-    return response.data;
+    console.log(response);
+    return response;
   } catch (error: any) {
     console.log(error);
     throw new Error(error);
