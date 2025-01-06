@@ -68,25 +68,35 @@ class authController {
   }
 
   async register(req: Request, res: Response): Promise<void> {
-    const { first_name, last_name, username, email } = req.body;
+    const { first_name, last_name, username, email, age } = req.body;
     try {
       const { registration } = await auth.checkRegistration(username, email);
       if (registration) {
-        res.status(404).json({ message: "email is already exist!" });
+        res
+          .status(404)
+          .json({ status: false, message: "email is already exist!" });
         return;
       }
 
       const id = generateUUID();
       const hashedPassword = await hashed(req.body.password);
-      const newUser = await auth.register(
-        { id_user: id as string, first_name, last_name, username, email },
+      await auth.register(
+        {
+          id_user: id as string,
+          first_name,
+          last_name,
+          username,
+          email,
+          age: age as number,
+        },
         hashedPassword
       );
       res.status(201).json({
-        message: "User created successfully",
-        user: { first_name, last_name, username, email },
+        status: true,
+        message: "Success register account!",
       });
     } catch (error: any) {
+      console.log(error);
       res.status(500).json({
         message: "Error register user",
         error: error.message,

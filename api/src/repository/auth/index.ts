@@ -10,6 +10,7 @@ interface IUserAuth {
       last_name: string;
       username: string;
       email: string;
+      age: number;
     },
     password: string
   ): Promise<{}>;
@@ -41,19 +42,22 @@ class userAuth implements IUserAuth {
       last_name: string;
       username: string;
       email: string;
+      age: number;
     },
     password: string
   ): Promise<{}> {
     let query =
-      "INSERT INTO users (id_user, first_name, last_name, username, email, password) VALUES (?, ?, ?, ?, ?, ?)";
+      "INSERT INTO users (id_user, first_name, last_name, username, email,age,  password) VALUES (?, ?, ?, ?, ?, ?, ?)";
     const values = [
       user.id_user,
       user.first_name,
       user.last_name,
       user.username,
       user.email,
+      user.age,
       password,
     ];
+    console.log(values);
     return new Promise((resolve, reject) => {
       db.query(query, values, (err, result) => {
         if (err) {
