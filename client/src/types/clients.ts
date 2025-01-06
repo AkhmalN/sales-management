@@ -1,7 +1,7 @@
 export interface IClientGetResponse {
   data: any[] | [];
-  message: string;
-  pagination: {
+  message?: string;
+  pagination?: {
     page: number;
     size: number;
     total: number;
