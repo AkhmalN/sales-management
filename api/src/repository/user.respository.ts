@@ -10,7 +10,7 @@ interface IUsersRepository {
   }): Promise<IUser[]>;
   findById(id: number): Promise<IUser | undefined>;
   create(user: IUser, id_user: string): Promise<{}>;
-  delete(id: number): Promise<{}>;
+  delete(id: string): Promise<{}>;
   update(user: IUser, id: string): Promise<{}>;
   count(): Promise<[{ total: number }]>;
 }
@@ -105,7 +105,7 @@ class UsersRepository implements IUsersRepository {
     });
   }
 
-  delete(id: number): Promise<{}> {
+  delete(id: string): Promise<{}> {
     let query = "DELETE FROM users WHERE id_user = ?";
 
     return new Promise((resolve, reject) => {

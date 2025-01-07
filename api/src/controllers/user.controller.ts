@@ -83,7 +83,7 @@ class UsersController {
     const { id_user } = req.params;
 
     try {
-      await userRespository.delete(parseInt(id_user));
+      await userRespository.delete(id_user);
       res.status(200).json({
         message: "User has been deleted",
       });
