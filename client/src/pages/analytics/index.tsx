@@ -29,7 +29,7 @@ const AnalyticsPage = () => {
         keyColumn={keyColumn.customer}
         title="Customers List"
         Action={TableAction}
-        fieldId="id_customer"
+        fieldId="id_user"
         ActionAdd={<ModalAdd title="Add Customer" />}
         paginate
       />

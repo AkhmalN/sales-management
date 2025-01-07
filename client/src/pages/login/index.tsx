@@ -33,12 +33,10 @@ const LoginPage: React.FC = () => {
         ? toast.success(response.message)
         : toast.warn(response.message);
       setToken(response.token.access_token);
-      if (response.status) {
-        storeInfo(data);
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 3000);
-      }
+      storeInfo(data);
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 3000);
       return result;
     } catch (error: any) {
       toast.warn(error);

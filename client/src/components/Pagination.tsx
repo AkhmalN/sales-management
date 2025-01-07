@@ -16,7 +16,7 @@ const Pagination = () => {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
+              strokeWidth="2"
             >
               <path d="m15 18-6-6 6-6"></path>
             </svg>
@@ -55,7 +55,7 @@ const Pagination = () => {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
+                  strokeWidth="2"
                 >
                   <path d="m6 17 5-5-5-5"></path>
                   <path d="m13 17 5-5-5-5"></path>
@@ -88,7 +88,7 @@ const Pagination = () => {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
+              strokeWidth="2"
             >
               <path d="m9 18 6-6-6-6"></path>
             </svg>

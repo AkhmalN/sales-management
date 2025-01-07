@@ -10,6 +10,7 @@ interface ModalProps {
   size?: "auto" | "very-small" | "small" | "medium" | "large";
   title?: string;
   className?: string;
+  subtitle?: string;
 }
 
 function Modal({
@@ -19,6 +20,7 @@ function Modal({
   size = "large",
   title,
   className,
+  subtitle,
 }: ModalProps) {
   return (
     <AnimatePresence>
@@ -27,7 +29,7 @@ function Modal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 "
+          className="fixed inset-0 bg-black/40 flex justify-center items-center z-50"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -43,14 +45,19 @@ function Modal({
                 ? "w-2/5 h-2/5"
                 : size === "very-small"
                 ? "w-2/5 h-2/6"
+                : size === "auto"
+                ? "w-auto h-auto" // Set modal size to auto
                 : "w-2/4 h-auto"
             } ${className}`}
           >
             <div className="flex justify-between w-full h-[10%]">
-              <div>
-                <h2 className="absolute top-3 text-lg font-semibold">
-                  {title}
-                </h2>
+              <div className="w-[500px]">
+                <h2 className="text-lg font-semibold my-1">{title}</h2>
+                {subtitle && (
+                  <p className="text-md text-gray-500 mt-2 text-wrap">
+                    {subtitle}
+                  </p>
+                )}
               </div>
               <div>
                 <button

@@ -16,7 +16,6 @@ type TPostRequest = {
 
 type TDeleteRequest = {
   url: string;
-  params?: Record<string, any>;
 };
 
 type TPutRequest = {
@@ -52,12 +51,9 @@ export const postRequest = async <T>({
   }
 };
 
-export const deleteRequest = async ({
-  url,
-  params = {},
-}: TDeleteRequest): Promise<void> => {
+export const deleteRequest = async ({ url }: TDeleteRequest): Promise<void> => {
   try {
-    const response = await axios.delete(url, { params });
+    const response = await axios.delete(url);
     return response.data;
   } catch (error: any) {
     return error;
