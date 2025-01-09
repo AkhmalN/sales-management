@@ -4,7 +4,7 @@ import { FaTrash } from "react-icons/fa";
 import Modal from "../../components/Modal";
 import { LuTrash } from "react-icons/lu";
 import { IUser } from "../../types/users";
-import { deleteUserData } from "../../lib/api/users/deleteUser";
+// import { deleteUserData } from "../../lib/api/users/deleteUser";
 
 const ModalDelete = ({
   title,
@@ -24,7 +24,7 @@ const ModalDelete = ({
   async function handleDeleteUser() {
     setIsLoading(true);
     try {
-      await deleteUserData({ id: dt.id_user });
+      // await deleteUserData({ id: dt.id_user });
       setIsLoading(false);
       setOpen(false);
     } catch (error: any) {

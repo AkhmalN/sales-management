@@ -1,5 +1,5 @@
-export interface IClientGetResponse {
-  data: any[] | [];
+export interface IUserResponse {
+  data: any[];
   message?: string;
   pagination?: {
     page: number;

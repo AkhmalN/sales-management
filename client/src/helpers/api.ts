@@ -2,9 +2,10 @@ import axios from "../utils/axios";
 
 type TGetRequest = {
   url: string;
-  params: {
+  params?: {
     page: number;
     size: number;
+    sort: string;
   };
 };
 
@@ -16,6 +17,7 @@ type TPostRequest = {
 
 type TDeleteRequest = {
   url: string;
+  params?: Record<string, any>;
 };
 
 type TPutRequest = {
@@ -24,12 +26,9 @@ type TPutRequest = {
   params?: Record<string, any>;
 };
 
-export const getRequest = async <T>({
-  url,
-  params = { page: 1, size: 10 },
-}: TGetRequest): Promise<T> => {
+export const getRequest = async <T>({ url }: TGetRequest): Promise<T> => {
   try {
-    const response = await axios.get(url, { params });
+    const response = await axios.get(url);
     return response.data;
   } catch (error: any) {
     return error;
@@ -51,22 +50,25 @@ export const postRequest = async <T>({
   }
 };
 
-export const deleteRequest = async ({ url }: TDeleteRequest): Promise<void> => {
+export const deleteRequest = async <T>({
+  url,
+  params = {},
+}: TDeleteRequest): Promise<T> => {
   try {
-    const response = await axios.delete(url);
+    const response = await axios.delete<T>(url, { params });
     return response.data;
   } catch (error: any) {
     return error;
   }
 };
 
-export const putRequest = async ({
+export const putRequest = async <T>({
   url,
   params = {},
   data = {},
-}: TPutRequest): Promise<void> => {
+}: TPutRequest): Promise<T> => {
   try {
-    const response = await axios.put(url, data, { params });
+    const response = await axios.put<T>(url, data, { params });
     return response.data;
   } catch (error: any) {
     return error;
