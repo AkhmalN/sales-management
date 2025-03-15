@@ -73,13 +73,12 @@ class userAuth implements IUserAuth {
     username: string,
     email: string
   ): Promise<{ registration: boolean; user: IUser | null }> {
-    let query = "SELECT * FROM users WHERE username = ? AND email = ?";
+    let query = "SELECT * FROM users WHERE username = ? OR email = ?";
     return new Promise((resolve, reject) => {
       db.query<IUser[]>(query, [username, email], (err, result) => {
         if (err) {
           return reject(err);
         }
-        // console.log(result);
         if (result.length > 0) {
           resolve({ registration: true, user: result[0] });
         } else {

@@ -33,25 +33,25 @@ class authController {
         res.status(400).json({ status: false, message: "Invalid password" });
         return;
       }
-      const token = jwt.sign({ id: user.id_user }, "secretkey");
-      const token_expired = 3600;
-
+      const token_expires = "1d";
+      const token = jwt.sign({ id: user.id_user }, "secretkey", {
+        expiresIn: "1d",
+      });
       res
         .cookie("access_token", token, {
           httpOnly: true,
-          maxAge: token_expired * 1000,
+          maxAge: 24 * 60 * 60 * 1000,
         })
         .status(200)
         .json({
           status: true,
           message: "Successfully login",
           data: {
-            username,
-            email,
+            user_id: user.id_user,
           },
           token: {
             access_token: token,
-            expires_in: token_expired,
+            expires_in: token_expires,
           },
         });
     } catch (error: any) {

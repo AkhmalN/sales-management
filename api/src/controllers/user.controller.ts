@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import userRespository from "@app/repository/user.respository";
 import generateUUID from "@app/helpers/uuid.helper";
+import auth from "@app/repository/auth";
+import { hashed } from "@app/services/hash";
+import { IUser } from "@app/models/user.model";
 
 class UsersController {
   async getAllUsers(req: Request, res: Response): Promise<void> {
@@ -50,26 +53,34 @@ class UsersController {
 
   async createUser(req: Request, res: Response): Promise<void> {
     const { first_name, last_name, username, email, password } = req.body;
-
     try {
       if (!first_name || !last_name || !username || !email || !password) {
         res.status(400).json({
           message:
             "The form must not be blank and must be completely filled in",
         });
+        return;
       }
       const id = generateUUID();
-
-      await userRespository.create(req.body, id as string);
+      const { registration } = await auth.checkRegistration(username, email);
+      if (registration) {
+        res.status(409).json({
+          message: "The username or email has already been registered",
+        });
+        return;
+      }
+      const hashPassword = await hashed(password);
+      const data = {
+        first_name,
+        last_name,
+        username,
+        email,
+        password: hashPassword,
+      };
+      await userRespository.create(data, id as string);
 
       res.status(201).json({
         message: "User created successfully",
-        user: {
-          first_name,
-          last_name,
-          username,
-          email,
-        },
       });
     } catch (error: any) {
       res.status(500).json({

@@ -59,7 +59,7 @@ class UsersRepository implements IUsersRepository {
     });
   }
 
-  create(user: IUser, id_user: string): Promise<{}> {
+  create(user: any, id_user: string): Promise<{}> {
     let query =
       "INSERT INTO users (id_user, first_name, last_name, username, email, password) VALUES (?, ?, ?, ?, ?, ?)";
     const values = [
