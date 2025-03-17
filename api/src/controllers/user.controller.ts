@@ -52,9 +52,27 @@ class UsersController {
   }
 
   async createUser(req: Request, res: Response): Promise<void> {
-    const { first_name, last_name, username, email, password } = req.body;
+    const {
+      first_name,
+      last_name,
+      username,
+      email,
+      password,
+      phone,
+      age,
+      address,
+    } = req.body;
     try {
-      if (!first_name || !last_name || !username || !email || !password) {
+      if (
+        !first_name ||
+        !last_name ||
+        !username ||
+        !email ||
+        !password ||
+        !phone ||
+        !age ||
+        !address
+      ) {
         res.status(400).json({
           message:
             "The form must not be blank and must be completely filled in",
@@ -76,6 +94,9 @@ class UsersController {
         username,
         email,
         password: hashPassword,
+        phone,
+        age,
+        address,
       };
       await userRespository.create(data, id as string);
 

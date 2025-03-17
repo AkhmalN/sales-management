@@ -61,7 +61,7 @@ class UsersRepository implements IUsersRepository {
 
   create(user: any, id_user: string): Promise<{}> {
     let query =
-      "INSERT INTO users (id_user, first_name, last_name, username, email, password) VALUES (?, ?, ?, ?, ?, ?)";
+      "INSERT INTO users (id_user, first_name, last_name, username, email, password, phone, age, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const values = [
       id_user,
       user.first_name,
@@ -69,6 +69,9 @@ class UsersRepository implements IUsersRepository {
       user.username,
       user.email,
       user.password,
+      user.phone,
+      user.age,
+      user.address,
     ];
     return new Promise((resolve, reject) => {
       db.query(query, values, (err, result) => {
