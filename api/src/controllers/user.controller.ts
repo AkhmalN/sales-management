@@ -101,6 +101,7 @@ class UsersController {
       await userRespository.create(data, id as string);
 
       res.status(201).json({
+        data: data,
         message: "User created successfully",
       });
     } catch (error: any) {
